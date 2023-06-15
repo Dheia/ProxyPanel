@@ -42,7 +42,7 @@ class IP
             } else {
                 while ($source <= 10 && $ret === null) {  // 中文ipv6
                     $ret = match ($source) {
-                        0 => self::userAgentInfo($ip),
+                        //0 => self::userAgentInfo($ip),
                         1 => self::baiduBce($ip),
                         2 => self::TenAPI($ip),
                         3 => self::TaoBao($ip),
@@ -125,8 +125,8 @@ class IP
             $url = "https://qifu-api.baidubce.com/ip/geo/v1/district?ip=$ip";
         }
         $response = Http::timeout(15)->get($url);
+        $data = $response->json();
         if ($response->ok()) {
-            $data = $response->json();
             if ($data['code'] === 'Success') {
                 return [
                     'country' => $data['data']['country'],
@@ -141,7 +141,7 @@ class IP
 
             Log::error('【baiduBce】IP查询失败：'.$data['msg'] ?? '');
         } else {
-            Log::error('【baiduBce】查询无效：'.$ip);
+            Log::error('【baiduBce】查询无效：'.$ip.var_export($data, true));
         }
 
         return null;
@@ -264,7 +264,7 @@ class IP
                 ];
             }
 
-            Log::error('【userAgentInfo】IP查询失败：'.$data['desc'] ?? '');
+            Log::error('【userAgentInfo】IP查询失败：'.$data ?? '');
         } else {
             Log::error('【userAgentInfo】查询无效：'.$ip);
         }

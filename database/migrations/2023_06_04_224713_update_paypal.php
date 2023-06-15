@@ -14,10 +14,10 @@ return new class extends Migration
     public function up(): void
     {
         foreach (self::$newConfigs as $config) {
-            Config::insert(['name' => $config]);
+            \App\Models\Config::insert(['name' => $config]);
         }
         foreach (self::$dropConfigs as $config) {
-            Config::destroy(['name' => $config]);
+            \App\Models\Config::destroy(['name' => $config]);
         }
     }
 
@@ -27,10 +27,10 @@ return new class extends Migration
     public function down(): void
     {
         foreach (self::$newConfigs as $config) {
-            Config::destroy(['name' => $config]);
+            \App\Models\Config::destroy(['name' => $config]);
         }
         foreach (self::$dropConfigs as $config) {
-            Config::insert(['name' => $config]);
+            \App\Models\Config::insert(['name' => $config]);
         }
     }
 };
